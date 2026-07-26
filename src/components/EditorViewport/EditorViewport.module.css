@@ -1,0 +1,6 @@
+.viewport {
+  width: 100%;
+  height: clamp(420px, 65vh, 720px);
+  overflow: hidden;
+  background-color: #101010;
+}

@@ -1,0 +1,9 @@
+:root {
+  --rie-background-color: #121212;
+  --rie-surface-color: #1d1d1d;
+  --rie-text-color: #f5f5f5;
+  --rie-muted-text-color: #a3a3a3;
+  --rie-border-color: #343434;
+  --rie-accent-color: #22c55e;
+  --rie-border-radius: 12px;
+}

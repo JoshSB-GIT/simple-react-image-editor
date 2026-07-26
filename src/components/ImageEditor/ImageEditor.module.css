@@ -1,0 +1,29 @@
+.editor {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--rie-border-color);
+  border-radius: var(--rie-border-radius);
+  background-color: var(--rie-surface-color);
+  color: var(--rie-text-color);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--rie-border-color);
+}
+
+.title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.description {
+  margin: 4px 0 0;
+  color: var(--rie-muted-text-color);
+  font-size: 0.875rem;
+}
