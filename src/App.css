@@ -9,6 +9,10 @@
 }
 
 .app__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
   margin-bottom: 24px;
 }
 
@@ -22,8 +26,38 @@
   color: #a3a3a3;
 }
 
-@media (max-width: 600px) {
+.app__file-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid #454545;
+  border-radius: 8px;
+  background-color: #262626;
+  cursor: pointer;
+}
+
+.app__file-control:hover {
+  background-color: #303030;
+}
+
+.app__file-control input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 700px) {
   .app {
     padding: 16px;
+  }
+
+  .app__header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
