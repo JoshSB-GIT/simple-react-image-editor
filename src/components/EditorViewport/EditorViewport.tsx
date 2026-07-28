@@ -1,17 +1,44 @@
 import { Layer, Rect, Stage, Text } from "react-konva";
 
 import { useContainerSize } from "../../hooks/useContainerSize";
+import { useImageLoader } from "../../hooks/useImageLoader";
 
 import styles from "./EditorViewport.module.css";
 
-export function EditorViewport() {
+export interface EditorViewportProps {
+  source?: File | null;
+}
+
+export function EditorViewport({ source }: EditorViewportProps) {
   const { containerRef, size } = useContainerSize<HTMLDivElement>();
 
+  const {
+    status,
+    width: imageWidth,
+    height: imageHeight,
+    error,
+  } = useImageLoader(source);
+
   const guideWidth = Math.max(0, Math.min(640, size.width - 48));
+
   const guideHeight = Math.max(0, Math.min(420, size.height - 48));
 
   const guideX = (size.width - guideWidth) / 2;
   const guideY = (size.height - guideHeight) / 2;
+
+  let statusMessage = "Selecciona una imagen para comenzar.";
+
+  if (status === "loading") {
+    statusMessage = "Cargando imagen...";
+  }
+
+  if (status === "loaded") {
+    statusMessage = `Imagen cargada: ${imageWidth} × ${imageHeight} px`;
+  }
+
+  if (status === "error") {
+    statusMessage = error?.message ?? "Ocurrió un error al cargar la imagen.";
+  }
 
   return (
     <div ref={containerRef} className={styles.viewport}>
@@ -42,7 +69,7 @@ export function EditorViewport() {
               y={guideY + guideHeight / 2 - 10}
               width={guideWidth}
               align="center"
-              text="El Canvas de Konva está funcionando"
+              text={statusMessage}
               fill="#a3a3a3"
               fontSize={16}
               fontFamily="Arial"
