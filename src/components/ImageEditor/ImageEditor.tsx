@@ -21,8 +21,6 @@ export function ImageEditor({ source, className }: ImageEditorProps) {
 
   const editorClassName = [styles.editor, className].filter(Boolean).join(" ");
 
-  console.log(document);
-
   return (
     <section className={editorClassName} aria-label="Editor de imágenes">
       <header className={styles.header}>

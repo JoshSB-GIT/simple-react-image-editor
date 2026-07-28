@@ -68,8 +68,6 @@ export function EditorViewport({ source, transform }: EditorViewportProps) {
 
   const canRenderStage = size.width > 0 && size.height > 0;
 
-  console.log({ x: transform.flipX, y: transform.flipY });
-
   const flipX = transform.flipX ? -1 : 1;
   const flipY = transform.flipY ? -1 : 1;
 
