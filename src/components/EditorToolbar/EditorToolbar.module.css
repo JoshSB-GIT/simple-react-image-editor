@@ -1,0 +1,49 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 56px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--rie-border-color);
+  background-color: var(--rie-surface-color);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.actions button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--rie-border-color);
+  border-radius: 6px;
+  background-color: #282828;
+  color: var(--rie-text-color);
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: #343434;
+}
+
+.actions button:focus-visible {
+  outline: 2px solid var(--rie-accent-color);
+  outline-offset: 2px;
+}
+
+.rotation {
+  color: var(--rie-muted-text-color);
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 650px) {
+  .toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
