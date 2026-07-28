@@ -1,4 +1,4 @@
-export type ImageRotation = 0 | 90 | 180 | 270;
+export type ImageRotation = number;
 
 export interface ImageTransform {
   rotation: ImageRotation;

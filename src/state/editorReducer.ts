@@ -3,12 +3,18 @@ import { INITIAL_EDITOR_DOCUMENT } from "./initialEditorState";
 
 import type { EditorDocument, ImageRotation } from "../types/document";
 
+const ROTATION_STEP = 45;
+
+function normalizeRotation(rotation: number): ImageRotation {
+  return ((rotation % 360) + 360) % 360;
+}
+
 function rotateRight(rotation: ImageRotation): ImageRotation {
-  return ((rotation + 45) % 360) as ImageRotation;
+  return normalizeRotation(rotation + ROTATION_STEP);
 }
 
 function rotateLeft(rotation: ImageRotation): ImageRotation {
-  return ((rotation + 315) % 360) as ImageRotation;
+  return normalizeRotation(rotation - ROTATION_STEP);
 }
 
 export function editorReducer(
