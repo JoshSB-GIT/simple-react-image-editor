@@ -21,6 +21,8 @@ export function ImageEditor({ source, className }: ImageEditorProps) {
 
   const editorClassName = [styles.editor, className].filter(Boolean).join(" ");
 
+  console.log(document);
+
   return (
     <section className={editorClassName} aria-label="Editor de imágenes">
       <header className={styles.header}>
@@ -45,6 +47,12 @@ export function ImageEditor({ source, className }: ImageEditorProps) {
         }}
         onReset={() => {
           dispatch({ type: "RESET" });
+        }}
+        onFlipHorizontal={() => {
+          dispatch({ type: "FLIP_HORIZONTAL" });
+        }}
+        onFlipVertical={() => {
+          dispatch({ type: "FLIP_VERTICAL" });
         }}
       />
 

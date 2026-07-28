@@ -4,6 +4,8 @@ import styles from "./EditorToolbar.module.css";
 
 export interface EditorToolbarProps {
   rotation: ImageRotation;
+  onFlipHorizontal: () => void;
+  onFlipVertical: () => void;
   onRotateLeft: () => void;
   onRotateRight: () => void;
   onReset: () => void;
@@ -11,6 +13,8 @@ export interface EditorToolbarProps {
 
 export function EditorToolbar({
   rotation,
+  onFlipHorizontal,
+  onFlipVertical,
   onRotateLeft,
   onRotateRight,
   onReset,
@@ -22,6 +26,14 @@ export function EditorToolbar({
       aria-label="Herramientas del editor"
     >
       <div className={styles.actions}>
+        <button type="button" onClick={onFlipHorizontal}>
+          Invertir horizontal
+        </button>
+
+        <button type="button" onClick={onFlipVertical}>
+          Invertir vertical
+        </button>
+
         <button type="button" onClick={onRotateLeft}>
           Rotar izquierda
         </button>
