@@ -1,3 +1,9 @@
+import { useReducer } from "react";
+
+import { editorReducer } from "../../state/editorReducer";
+import { INITIAL_EDITOR_DOCUMENT } from "../../state/initialEditorState";
+
+import { EditorToolbar } from "../EditorToolbar";
 import { EditorViewport } from "../EditorViewport";
 
 import styles from "./ImageEditor.module.css";
@@ -8,6 +14,11 @@ export interface ImageEditorProps {
 }
 
 export function ImageEditor({ source, className }: ImageEditorProps) {
+  const [document, dispatch] = useReducer(
+    editorReducer,
+    INITIAL_EDITOR_DOCUMENT,
+  );
+
   const editorClassName = [styles.editor, className].filter(Boolean).join(" ");
 
   return (
@@ -24,7 +35,20 @@ export function ImageEditor({ source, className }: ImageEditorProps) {
         </div>
       </header>
 
-      <EditorViewport />
+      <EditorToolbar
+        rotation={document.transform.rotation}
+        onRotateLeft={() => {
+          dispatch({ type: "ROTATE_LEFT" });
+        }}
+        onRotateRight={() => {
+          dispatch({ type: "ROTATE_RIGHT" });
+        }}
+        onReset={() => {
+          dispatch({ type: "RESET" });
+        }}
+      />
+
+      <EditorViewport source={source} transform={document.transform} />
     </section>
   );
 }
