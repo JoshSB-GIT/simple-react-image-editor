@@ -1,8 +1,10 @@
 import { Image as KonvaImage, Layer, Rect, Stage, Text } from "react-konva";
 
 import { calculateContainedRect } from "../../core/geometry/calculateContainedRect";
+import { calculateRotatedBoundingSize } from "../../core/geometry/calculateRotatedBoundingSize";
 import { useContainerSize } from "../../hooks/useContainerSize";
 import { useImageLoader } from "../../hooks/useImageLoader";
+
 import type { ImageTransform } from "../../types/document";
 
 import styles from "./EditorViewport.module.css";
@@ -13,40 +15,42 @@ export interface EditorViewportProps {
 }
 
 export function EditorViewport({ source, transform }: EditorViewportProps) {
-  const { containerRef, size: viewportSize } =
-    useContainerSize<HTMLDivElement>();
+  const { containerRef, size } = useContainerSize<HTMLDivElement>();
 
   const {
     status,
     image,
-    width: originalImageWidth,
-    height: originalImageHeight,
+    width: imageWidth,
+    height: imageHeight,
     error,
   } = useImageLoader(source);
 
-  const isSideways = transform.rotation === 90 || transform.rotation === 270;
-
-  const rotatedImageSize = {
-    width: isSideways ? originalImageHeight : originalImageWidth,
-    height: isSideways ? originalImageWidth : originalImageHeight,
-  };
+  const rotatedBoundingSize = calculateRotatedBoundingSize({
+    width: imageWidth,
+    height: imageHeight,
+    rotation: transform.rotation,
+  });
 
   const imageBounds = image
     ? calculateContainedRect({
-        container: viewportSize,
-        content: rotatedImageSize,
+        container: size,
+        content: rotatedBoundingSize,
         padding: 24,
       })
     : null;
 
   const imageScale =
-    imageBounds && rotatedImageSize.width > 0
-      ? imageBounds.width / rotatedImageSize.width
+    imageBounds &&
+    rotatedBoundingSize.width > 0 &&
+    rotatedBoundingSize.height > 0
+      ? Math.min(
+          imageBounds.width / rotatedBoundingSize.width,
+          imageBounds.height / rotatedBoundingSize.height,
+        )
       : 0;
 
-  const renderedImageWidth = originalImageWidth * imageScale;
-
-  const renderedImageHeight = originalImageHeight * imageScale;
+  const renderedImageWidth = imageWidth * imageScale;
+  const renderedImageHeight = imageHeight * imageScale;
 
   const imageCenterX = imageBounds ? imageBounds.x + imageBounds.width / 2 : 0;
 
@@ -62,7 +66,7 @@ export function EditorViewport({ source, transform }: EditorViewportProps) {
     statusMessage = error?.message ?? "Ocurrió un error al cargar la imagen.";
   }
 
-  const canRenderStage = viewportSize.width > 0 && viewportSize.height > 0;
+  const canRenderStage = size.width > 0 && size.height > 0;
 
   const canRenderImage =
     status === "loaded" &&
@@ -73,19 +77,21 @@ export function EditorViewport({ source, transform }: EditorViewportProps) {
   return (
     <div ref={containerRef} className={styles.viewport}>
       {canRenderStage && (
-        <Stage width={viewportSize.width} height={viewportSize.height}>
+        <Stage width={size.width} height={size.height}>
+          {/* Capa del fondo del editor */}
           <Layer listening={false}>
             <Rect
               x={0}
               y={0}
-              width={viewportSize.width}
-              height={viewportSize.height}
+              width={size.width}
+              height={size.height}
               fill="#101010"
             />
           </Layer>
 
+          {/* Capa que contiene la imagen o el mensaje de estado */}
           <Layer listening={false}>
-            {canRenderImage && (
+            {canRenderImage ? (
               <KonvaImage
                 image={image}
                 x={imageCenterX}
@@ -96,13 +102,11 @@ export function EditorViewport({ source, transform }: EditorViewportProps) {
                 offsetY={renderedImageHeight / 2}
                 rotation={transform.rotation}
               />
-            )}
-
-            {!canRenderImage && (
+            ) : (
               <Text
                 x={24}
-                y={viewportSize.height / 2 - 10}
-                width={Math.max(0, viewportSize.width - 48)}
+                y={size.height / 2 - 10}
+                width={Math.max(0, size.width - 48)}
                 text={statusMessage}
                 align="center"
                 fill="#a3a3a3"
