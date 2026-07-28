@@ -68,6 +68,9 @@ export function EditorViewport({ source, transform }: EditorViewportProps) {
 
   const canRenderStage = size.width > 0 && size.height > 0;
 
+  const flipX = transform.flipX ? -1 : 1;
+  const flipY = transform.flipY ? -1 : 1;
+
   const canRenderImage =
     status === "loaded" &&
     image !== null &&
@@ -78,7 +81,6 @@ export function EditorViewport({ source, transform }: EditorViewportProps) {
     <div ref={containerRef} className={styles.viewport}>
       {canRenderStage && (
         <Stage width={size.width} height={size.height}>
-          {/* Capa del fondo del editor */}
           <Layer listening={false}>
             <Rect
               x={0}
@@ -89,7 +91,6 @@ export function EditorViewport({ source, transform }: EditorViewportProps) {
             />
           </Layer>
 
-          {/* Capa que contiene la imagen o el mensaje de estado */}
           <Layer listening={false}>
             {canRenderImage ? (
               <KonvaImage
@@ -101,6 +102,8 @@ export function EditorViewport({ source, transform }: EditorViewportProps) {
                 offsetX={renderedImageWidth / 2}
                 offsetY={renderedImageHeight / 2}
                 rotation={transform.rotation}
+                scaleX={flipX}
+                scaleY={flipY}
               />
             ) : (
               <Text

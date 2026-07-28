@@ -46,6 +46,12 @@ export function ImageEditor({ source, className }: ImageEditorProps) {
         onReset={() => {
           dispatch({ type: "RESET" });
         }}
+        onFlipHorizontal={() => {
+          dispatch({ type: "FLIP_HORIZONTAL" });
+        }}
+        onFlipVertical={() => {
+          dispatch({ type: "FLIP_VERTICAL" });
+        }}
       />
 
       <EditorViewport source={source} transform={document.transform} />

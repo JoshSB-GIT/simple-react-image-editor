@@ -40,6 +40,24 @@ export function editorReducer(
         },
       };
 
+    case "FLIP_HORIZONTAL":
+      return {
+        ...state,
+        transform: {
+          ...state.transform,
+          flipX: !state.transform.flipX,
+        },
+      };
+
+    case "FLIP_VERTICAL":
+      return {
+        ...state,
+        transform: {
+          ...state.transform,
+          flipY: !state.transform.flipY,
+        },
+      };
+
     case "RESET":
       return INITIAL_EDITOR_DOCUMENT;
 
