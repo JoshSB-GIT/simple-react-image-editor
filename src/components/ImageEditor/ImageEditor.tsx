@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 
-import { editorReducer } from "../../state/editorReducer";
-import { INITIAL_EDITOR_DOCUMENT } from "../../state/initialEditorState";
+import { historyReducer } from "../../core/history/historyReducer";
+import { INITIAL_HISTORY_STATE } from "../../core/history/initialHistoryState";
 
 import { EditorToolbar } from "../EditorToolbar";
 import { EditorViewport } from "../EditorViewport";
@@ -14,10 +14,7 @@ export interface ImageEditorProps {
 }
 
 export function ImageEditor({ source, className }: ImageEditorProps) {
-  const [document, dispatch] = useReducer(
-    editorReducer,
-    INITIAL_EDITOR_DOCUMENT,
-  );
+  const [history, dispatch] = useReducer(historyReducer, INITIAL_HISTORY_STATE);
 
   const editorClassName = [styles.editor, className].filter(Boolean).join(" ");
 
@@ -36,7 +33,9 @@ export function ImageEditor({ source, className }: ImageEditorProps) {
       </header>
 
       <EditorToolbar
-        rotation={document.transform.rotation}
+        canUndo={Boolean(history.past.length)}
+        canRedo={Boolean(history.future.length)}
+        rotation={history.present.transform.rotation}
         onRotateLeft={() => {
           dispatch({ type: "ROTATE_LEFT" });
         }}
@@ -52,9 +51,15 @@ export function ImageEditor({ source, className }: ImageEditorProps) {
         onFlipVertical={() => {
           dispatch({ type: "FLIP_VERTICAL" });
         }}
+        onRedo={() => {
+          dispatch({ type: "REDO" });
+        }}
+        onUndo={() => {
+          dispatch({ type: "UNDO" });
+        }}
       />
 
-      <EditorViewport source={source} transform={document.transform} />
+      <EditorViewport source={source} transform={history.present.transform} />
     </section>
   );
 }

@@ -4,20 +4,28 @@ import styles from "./EditorToolbar.module.css";
 
 export interface EditorToolbarProps {
   rotation: ImageRotation;
+  canUndo: boolean;
+  canRedo: boolean;
   onFlipHorizontal: () => void;
   onFlipVertical: () => void;
   onRotateLeft: () => void;
   onRotateRight: () => void;
   onReset: () => void;
+  onUndo: () => void;
+  onRedo: () => void;
 }
 
 export function EditorToolbar({
   rotation,
+  canUndo,
+  canRedo,
   onFlipHorizontal,
   onFlipVertical,
   onRotateLeft,
   onRotateRight,
   onReset,
+  onUndo,
+  onRedo,
 }: EditorToolbarProps) {
   return (
     <div
@@ -44,6 +52,14 @@ export function EditorToolbar({
 
         <button type="button" onClick={onReset}>
           Restablecer
+        </button>
+
+        <button type="button" onClick={onUndo}>
+          Deshacer
+        </button>
+
+        <button type="button" onClick={onRedo}>
+          Rehacer
         </button>
       </div>
 

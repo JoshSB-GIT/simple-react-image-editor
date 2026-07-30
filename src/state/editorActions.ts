@@ -3,4 +3,6 @@ export type EditorAction =
   | { type: "ROTATE_RIGHT" }
   | { type: "RESET" }
   | { type: "FLIP_HORIZONTAL" }
-  | { type: "FLIP_VERTICAL" };
+  | { type: "FLIP_VERTICAL" }
+  | { type: "UNDO" }
+  | { type: "REDO" };
